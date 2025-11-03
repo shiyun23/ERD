@@ -1,0 +1,79 @@
+erdiagram BusinessModel
+notation=crowsfoot
+
+entity Customer {
+  Cus_ID key
+  Cus_LName
+  Cus_FName
+  AreaCode
+  Cus_Balance
+  Cus_Phone
+}
+
+entity Invoice {
+  INV_Number key
+  Cus_ID
+}
+
+entity Line {
+  Line_Number key
+  INV_Number
+  P_Code
+  Quantity
+}
+
+entity Product {
+  P_Code key
+  V_Code
+  Units_on_hand
+  P_Description
+}
+
+entity Order {
+  Ord_ID key
+  M_Code
+  P_Code
+  Order_Date
+}
+
+entity Manufacturer {
+  M_Code key
+  M_Name
+}
+
+entity Promotion {
+  Promo_ID key
+  Participation_Date
+  P_Code
+}
+
+entity Customer_Promotion {
+  (Cus_ID, Promo_ID) key
+  Participation_Date
+  P_Code
+}
+
+relationship CustomerInvoice {
+  Customer [1..N | "customer"] -> Invoice [1 | "invoice"]
+}
+
+relationship InvoiceLine {
+  Invoice [1..N | "invoice"] -> Line [1 | "line"]
+}
+
+relationship LineProduct {
+  Product [1..N | "product"] -> Line [1 | "line"]
+}
+
+relationship ProductManufacturer {
+  Manufacturer [1..N | "manufacturer"] -> Product [1 | "product"]
+}
+
+relationship OrderProduct {
+  Product [1..N | "product"] -> Order [1 | "order"]
+}
+
+relationship PromotionCustomer {
+  Customer  [0..N | "customer"] -> Customer_Promotion [1 | "customer_promo"]
+  Promotion [0..N | "promotion"] -> Customer_Promotion [1 | "customer_promo"]
+}
